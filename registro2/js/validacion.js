@@ -7,6 +7,14 @@ document.getElementById('registro-form').addEventListener('submit', function(eve
     const contraseña = document.getElementById('password1').value;
     const repetirContraseña = document.getElementById('password2').value;
     const terminos = document.getElementById('terminos').checked;
+    const modalButton = document.querySelector("[data-bs-target='#modalTerminos']");
+    const terminosText = document.createElement("span");
+    terminosText.classList.add("text-danger", "ms-2");
+    
+    // Comprobar si el mensaje ya existe
+    if (!modalButton.parentElement.querySelector('.text-danger')) {
+        modalButton.parentElement.appendChild(terminosText);
+    }
 
     let valid = true;
 
@@ -44,13 +52,24 @@ document.getElementById('registro-form').addEventListener('submit', function(eve
 
     if (!terminos) {
         alert("Debes aceptar los términos y condiciones.");
+        terminosText.textContent = "No has aceptado los términos.";
         valid = false;
+    } else {
+        terminosText.textContent = "";      
     }
 
-    // Si todo es válido, puedes enviar el formulario
+    // Si todo es válido, mostrar el alert de éxito
     if (valid) {
+        
         alert("Registro exitoso.");
-        // Aquí puedes enviar el formulario o realizar otras acciones
-        this.submit(); // Descomentar esto si quieres enviar el formulario
+
+        if (modalButton.parentElement.querySelector('.text-danger')) {
+            modalButton.parentElement.querySelector('.text-danger').remove();
+        }
+
+        this.submit(); // Enviar el formulario después de mostrar el alert
+        document.getElementById('registro-form').reset();
+        
     }
+    
 });
